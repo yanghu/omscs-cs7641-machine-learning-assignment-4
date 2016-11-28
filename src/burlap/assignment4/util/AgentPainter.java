@@ -1,10 +1,10 @@
-package burlap.assignment4.util;
+package burlap.a4.util;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
-import burlap.assignment4.BasicGridWorld;
+import burlap.a4.BasicGridWorld;
 import burlap.oomdp.core.objects.ObjectInstance;
 import burlap.oomdp.core.states.State;
 import burlap.oomdp.visualizer.ObjectPainter;

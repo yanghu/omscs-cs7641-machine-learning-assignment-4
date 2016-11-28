@@ -1,4 +1,4 @@
-package burlap.assignment4.util;
+package burlap.a4.util;
 
 import java.util.List;
 

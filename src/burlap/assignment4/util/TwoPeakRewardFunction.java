@@ -6,14 +6,18 @@ import burlap.oomdp.core.states.State;
 import burlap.oomdp.singleagent.GroundedAction;
 import burlap.oomdp.singleagent.RewardFunction;
 
-public class BasicRewardFunction implements RewardFunction {
+public class TwoPeakRewardFunction implements RewardFunction {
 
 	int goalX;
 	int goalY;
+	int localX;
+	int localY;
 
-	public BasicRewardFunction(int goalX, int goalY) {
+	public TwoPeakRewardFunction(int goalX, int goalY, int localX, int localY) {
 		this.goalX = goalX;
 		this.goalY = goalY;
+		this.localX = localX;
+		this.localY = localY;
 	}
 
 	@Override
@@ -27,6 +31,9 @@ public class BasicRewardFunction implements RewardFunction {
 		// are they at goal location?
 		if (ax == this.goalX && ay == this.goalY) {
 			return 100.;
+		}
+		if (ax == this.localX && ay == this.localY) {
+			return 70.;
 		}
 
 		return 0;

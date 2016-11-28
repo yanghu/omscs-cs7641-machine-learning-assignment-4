@@ -1,6 +1,6 @@
-package burlap.assignment4.util;
+package burlap.a4.util;
 
-import burlap.assignment4.BasicGridWorld;
+import burlap.a4.BasicGridWorld;
 import burlap.behavior.policy.Policy;
 import burlap.behavior.singleagent.EpisodeAnalysis;
 import burlap.behavior.singleagent.auxiliary.StateReachability;
@@ -40,7 +40,7 @@ public class AnalysisRunner {
 
 	}
 	public void runValueIteration(BasicGridWorld gen, Domain domain,
-			State initialState, RewardFunction rf, TerminalFunction tf, boolean showPolicyMap) {
+			State initialState, RewardFunction rf, TerminalFunction tf, double gamma, double delta, boolean showPolicyMap) {
 		System.out.println("//Value Iteration Analysis//");
 		ValueIteration vi = null;
 		Policy p = null;
@@ -52,9 +52,9 @@ public class AnalysisRunner {
 					domain,
 					rf,
 					tf,
-					0.99,
+					gamma,
 					hashingFactory,
-					-1, numIterations); //Added a very high delta number in order to guarantee that value iteration occurs the max number of iterations
+					delta, numIterations); //Added a very high delta number in order to guarantee that value iteration occurs the max number of iterations
 										   //for comparison with the other algorithms.
 	
 			// run planning from our initial state
@@ -62,7 +62,7 @@ public class AnalysisRunner {
 			AnalysisAggregator.addMillisecondsToFinishValueIteration((int) (System.nanoTime()-startTime)/1000000);
 
 			// evaluate the policy with one roll out visualize the trajectory
-			ea = p.evaluateBehavior(initialState, rf, tf);
+			ea = p.evaluateBehavior(initialState, rf, tf, 100000);
 			AnalysisAggregator.addValueIterationReward(calcRewardInEpisode(ea));
 			AnalysisAggregator.addStepsToFinishValueIteration(ea.numTimeSteps());
 		}
@@ -78,7 +78,7 @@ public class AnalysisRunner {
 	}
 
 	public void runPolicyIteration(BasicGridWorld gen, Domain domain,
-			State initialState, RewardFunction rf, TerminalFunction tf, boolean showPolicyMap) {
+			State initialState, RewardFunction rf, TerminalFunction tf, double gamma, double delta, boolean showPolicyMap) {
 		System.out.println("//Policy Iteration Analysis//");
 		PolicyIteration pi = null;
 		Policy p = null;
@@ -90,16 +90,16 @@ public class AnalysisRunner {
 					domain,
 					rf,
 					tf,
-					0.99,
+					gamma,
 					hashingFactory,
-					-1, 1, numIterations);
+					delta, 1, numIterations);
 	
 			// run planning from our initial state
 			p = pi.planFromState(initialState);
 			AnalysisAggregator.addMillisecondsToFinishPolicyIteration((int) (System.nanoTime()-startTime)/1000000);
 
 			// evaluate the policy with one roll out visualize the trajectory
-			ea = p.evaluateBehavior(initialState, rf, tf);
+			ea = p.evaluateBehavior(initialState, rf, tf, 100000);
 			AnalysisAggregator.addPolicyIterationReward(calcRewardInEpisode(ea));
 			AnalysisAggregator.addStepsToFinishPolicyIteration(ea.numTimeSteps());
 		}
@@ -129,7 +129,7 @@ public class AnalysisRunner {
 	}
 	
 	public void runQLearning(BasicGridWorld gen, Domain domain,
-			State initialState, RewardFunction rf, TerminalFunction tf,
+			State initialState, RewardFunction rf, TerminalFunction tf, double gamma, double learningRate,
 			SimulatedEnvironment env, boolean showPolicyMap) {
 		System.out.println("//Q Learning Analysis//");
 
@@ -142,9 +142,9 @@ public class AnalysisRunner {
 
 			agent = new QLearning(
 				domain,
-				0.99,
+				gamma,
 				hashingFactory,
-				0.99, 0.99);
+				0.99, learningRate);
 			
 			for (int i = 0; i < numIterations; i++) {
 				ea = agent.runLearningEpisode(env);

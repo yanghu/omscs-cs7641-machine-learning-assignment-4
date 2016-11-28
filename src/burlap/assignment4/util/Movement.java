@@ -1,9 +1,9 @@
-package burlap.assignment4.util;
+package burlap.a4.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import burlap.assignment4.BasicGridWorld;
+import burlap.a4.BasicGridWorld;
 import burlap.oomdp.core.Domain;
 import burlap.oomdp.core.TransitionProbability;
 import burlap.oomdp.core.objects.ObjectInstance;
